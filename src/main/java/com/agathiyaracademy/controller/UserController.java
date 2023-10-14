@@ -15,7 +15,7 @@ public class UserController {
     }
 
     @GetMapping("add/user")
-    ConstantRecord.UserResponse addUser(@RequestBody ConstantRecord.UserRequest userRequest) {
+    public ConstantRecord.UserResponse addUser(@RequestBody ConstantRecord.UserRequest userRequest) {
         userService.addUser(userRequest);
         return null;
     }
