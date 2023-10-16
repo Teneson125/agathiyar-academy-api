@@ -15,7 +15,7 @@ public class StudentService {
     }
 
     public boolean saveStudent(Student student, User user) {
-        if(isStudentValid(student)){
+        if (isValidStudentData(student)) {
             student.setUser(user);
             studentRepository.save(student);
             return true;
@@ -23,8 +23,7 @@ public class StudentService {
         return false;
     }
 
-
-    private boolean isStudentValid(Student student){
-        return student.getStudentId() != null && student.getAddress() != null && student.getTnpscGroup() != null && student.getTnpscRegistrationNumber() != null;
+    private boolean isValidStudentData(Student student) {
+        return student.getAddress() != null && student.getTnpscGroup() != null && student.getTnpscRegistrationNumber() != null;
     }
 }

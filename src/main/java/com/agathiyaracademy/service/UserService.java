@@ -7,33 +7,38 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-    private final StudentService studentService;
-    private final AdminService adminService;
 
-    public UserService(UserRepository userRepository, StudentService studentService, AdminService adminService) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.studentService = studentService;
-        this.adminService = adminService;
     }
 
-    public void addUser(ConstantRecord.UserRequest userRequest) {
-        User user = User.builder()
-                .userName(userRequest.userName())
-                .password(userRequest.password())
-                .emailId(userRequest.emailId())
-                .phoneNumber(userRequest.phoneNumber())
-                .build();
-
-        //check the user is student
-        if (userRequest.student() != null && (!studentService.saveStudent(userRequest.student(), user))){
-                return;
+    public ConstantRecord.UserResponse saveUser(ConstantRecord.UserRequest userRequest) {
+        if (userRequest == null) {
+            return null;
         }
-        if(userRequest.admin() != null && (!adminService.saveAdmin(userRequest.admin(), user))){
-            return;
+        if (isValidUserData(userRequest) && !isEmailIdRegistered(userRequest.emailId()) && !isUserNameRegistered(userRequest.userName())) {
+            User user = User.builder().userName(userRequest.userName()).password(userRequest.password()).emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).build();
+            userRepository.save(user);
         }
-        userRepository.save(user);
+        return ConstantRecord.UserResponse.builder().emailId(userRequest.emailId()).userName(userRequest.userName()).phoneNumber(userRequest.phoneNumber()).build();
     }
 
+    private boolean isEmailIdRegistered(String emailId) {
+        if (emailId == null) {
+            return false;
+        }
+        return userRepository.findByEmailId(emailId) != null;
+    }
+
+    private boolean isUserNameRegistered(String userName) {
+        if (userName == null) {
+            return false;
+        }
+        return userRepository.findByUserName(userName) != null;
+    }
+
+    private boolean isValidUserData(ConstantRecord.UserRequest userRequest) {
+        return userRequest.userName() != null && userRequest.password() != null && userRequest.phoneNumber() != null && userRequest.emailId() != null && userRequest.name() != null;
+    }
 }
