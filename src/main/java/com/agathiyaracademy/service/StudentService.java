@@ -28,7 +28,9 @@ public class StudentService {
             if (user != null) {
                 Student student = null;
                 student = Student.builder().rollNumber(studentRequest.rollNumber()).isFeePaid(studentRequest.isFeePaid()).address(studentRequest.address()).tnpscGroup(studentRequest.tnpscGroup()).tnpscRegistrationNumber(studentRequest.tnpscRegistrationNumber()).build();
+                studentRepository.save(student);
                 student.setUser(user);
+//                TODO( we created the user in given entity and also perfectly created student entity but the student will create duplicate)
                 studentRepository.save(student);
                 studentResponse = ConstantRecord.StudentResponse.builder().name(student.getUser().getName()).emailId(student.getUser().getEmailId()).address(student.getAddress()).phoneNumber(student.getUser().getPhoneNumber()).tnpscGroup(student.getTnpscGroup()).isFeePaid(student.isFeePaid()).rollNumber(student.getRollNumber()).tnpscRegistrationNumber(student.getTnpscRegistrationNumber()).build();
             }
