@@ -19,7 +19,7 @@ public class Student {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    private String idNumber;
+    private String rollNumber;
     private String address;
     private String tnpscGroup;
     private String tnpscRegistrationNumber;

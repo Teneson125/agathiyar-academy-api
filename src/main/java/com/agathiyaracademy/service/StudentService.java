@@ -1,5 +1,6 @@
 package com.agathiyaracademy.service;
 
+import com.agathiyaracademy.constant.ConstantRecord;
 import com.agathiyaracademy.entity.Student;
 import com.agathiyaracademy.entity.User;
 import com.agathiyaracademy.repository.StudentRepository;
@@ -9,21 +10,33 @@ import org.springframework.stereotype.Service;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final UserService userService;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, UserService userService) {
         this.studentRepository = studentRepository;
+        this.userService = userService;
     }
 
-    public boolean saveStudent(Student student, User user) {
-        if (isValidStudentData(student)) {
-            student.setUser(user);
-            studentRepository.save(student);
-            return true;
+    public ConstantRecord.StudentResponse saveStudent(ConstantRecord.StudentRequest studentRequest) {
+        if (studentRequest == null) {
+            return null;
         }
-        return false;
+        ConstantRecord.StudentResponse studentResponse = null;
+        if (isValidStudentData(studentRequest) && userService.isEmailIdRegistered(studentRequest.emailId())) {
+            User user = null;
+            user = userService.fetchUserByEmailId(studentRequest.emailId());
+            if (user != null) {
+                Student student = null;
+                student = Student.builder().rollNumber(studentRequest.rollNumber()).isFeePaid(studentRequest.isFeePaid()).address(studentRequest.address()).tnpscGroup(studentRequest.tnpscGroup()).tnpscRegistrationNumber(studentRequest.tnpscRegistrationNumber()).build();
+                student.setUser(user);
+                studentRepository.save(student);
+                studentResponse = ConstantRecord.StudentResponse.builder().name(student.getUser().getName()).emailId(student.getUser().getEmailId()).address(student.getAddress()).phoneNumber(student.getUser().getPhoneNumber()).tnpscGroup(student.getTnpscGroup()).isFeePaid(student.isFeePaid()).rollNumber(student.getRollNumber()).tnpscRegistrationNumber(student.getTnpscRegistrationNumber()).build();
+            }
+        }
+        return studentResponse;
     }
 
-    private boolean isValidStudentData(Student student) {
-        return student.getAddress() != null && student.getTnpscGroup() != null && student.getTnpscRegistrationNumber() != null;
+    private boolean isValidStudentData(ConstantRecord.StudentRequest studentRequest) {
+        return studentRequest.rollNumber() != null && studentRequest.tnpscGroup() != null && studentRequest.address() != null;
     }
 }

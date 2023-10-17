@@ -17,28 +17,31 @@ public class UserService {
         if (userRequest == null) {
             return null;
         }
-        if (isValidUserData(userRequest) && !isEmailIdRegistered(userRequest.emailId()) && !isUserNameRegistered(userRequest.userName())) {
-            User user = User.builder().userName(userRequest.userName()).password(userRequest.password()).emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).build();
+        ConstantRecord.UserResponse userResponse = null;
+        if (isValidUserData(userRequest) && !isEmailIdRegistered(userRequest.emailId())) {
+            User user = null;
+            user = User.builder().password(userRequest.password()).emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).build();
             userRepository.save(user);
+            userResponse = ConstantRecord.UserResponse.builder().emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).build();
         }
-        return ConstantRecord.UserResponse.builder().emailId(userRequest.emailId()).userName(userRequest.userName()).phoneNumber(userRequest.phoneNumber()).build();
+        return userResponse;
     }
 
-    private boolean isEmailIdRegistered(String emailId) {
+    public boolean isEmailIdRegistered(String emailId) {
         if (emailId == null) {
             return false;
         }
         return userRepository.findByEmailId(emailId) != null;
     }
 
-    private boolean isUserNameRegistered(String userName) {
-        if (userName == null) {
-            return false;
+    public User fetchUserByEmailId(String emailId) {
+        if (emailId == null) {
+            return null;
         }
-        return userRepository.findByUserName(userName) != null;
+        return userRepository.findByEmailId(emailId);
     }
 
     private boolean isValidUserData(ConstantRecord.UserRequest userRequest) {
-        return userRequest.userName() != null && userRequest.password() != null && userRequest.phoneNumber() != null && userRequest.emailId() != null && userRequest.name() != null;
+        return userRequest.password() != null && userRequest.phoneNumber() != null && userRequest.emailId() != null && userRequest.name() != null;
     }
 }

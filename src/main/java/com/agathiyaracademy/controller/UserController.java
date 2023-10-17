@@ -22,5 +22,4 @@ public class UserController {
     public ResponseEntity<ConstantRecord.UserResponse> saveUser(@RequestBody ConstantRecord.UserRequest userRequest) {
         return new ResponseEntity<>(userService.saveUser(userRequest), HttpStatus.OK);
     }
-
 }
