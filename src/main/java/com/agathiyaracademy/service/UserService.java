@@ -20,9 +20,9 @@ public class UserService {
         ConstantRecord.UserResponse userResponse = null;
         if (isValidUserData(userRequest) && !isEmailIdRegistered(userRequest.emailId())) {
             User user = null;
-            user = User.builder().password(userRequest.password()).emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).build();
+            user = User.builder().password(userRequest.password()).emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).name(userRequest.name()).build();
             userRepository.save(user);
-            userResponse = ConstantRecord.UserResponse.builder().emailId(userRequest.emailId()).phoneNumber(userRequest.phoneNumber()).build();
+            userResponse = ConstantRecord.UserResponse.builder().emailId(user.getEmailId()).phoneNumber(user.getPhoneNumber()).name(user.getName()).build();
         }
         return userResponse;
     }
@@ -43,5 +43,21 @@ public class UserService {
 
     private boolean isValidUserData(ConstantRecord.UserRequest userRequest) {
         return userRequest.password() != null && userRequest.phoneNumber() != null && userRequest.emailId() != null && userRequest.name() != null;
+    }
+
+    public ConstantRecord.UserResponse getUser(String emailId) {
+        if(emailId==null){
+            return null;
+        }
+        ConstantRecord.UserResponse userResponse = null;
+        User user = fetchUserByEmailId(emailId);
+        if(user!=null){
+            ConstantRecord.StudentResponseForUserResponse studentResponse = null;
+            if(user.getStudent()!=null){
+                studentResponse = ConstantRecord.StudentResponseForUserResponse.builder().rollNumber(user.getStudent().getRollNumber()).tnpscGroup(user.getStudent().getTnpscGroup()).isFeePaid(user.getStudent().isFeePaid()).address(user.getStudent().getAddress()).tnpscRegistrationNumber(user.getStudent().getTnpscRegistrationNumber()).build();
+            }
+            userResponse = ConstantRecord.UserResponse.builder().name(user.getName()).phoneNumber(user.getPhoneNumber()).emailId(user.getEmailId()).student(studentResponse).build();
+        }
+        return userResponse;
     }
 }

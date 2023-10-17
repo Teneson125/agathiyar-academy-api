@@ -1,20 +1,21 @@
 package com.agathiyaracademy.constant;
 
-import com.agathiyaracademy.entity.Admin;
-import com.agathiyaracademy.entity.Student;
 import lombok.Builder;
 
 @Builder
 public class ConstantRecord {
     @Builder
-    public record UserResponse(String name, String emailId, String phoneNumber) {
+    public record UserResponse(String name, String emailId, String phoneNumber, StudentResponseForUserResponse student) {
     }
 
     @Builder
-    public record UserRequest(String name, String password, String emailId, String phoneNumber,
-                              Student student, Admin admin) {
+    public record UserRequest(String name, String password, String emailId, String phoneNumber) {
     }
+    @Builder
+    public record StudentResponseForUserResponse(String rollNumber, String tnpscGroup, String tnpscRegistrationNumber,
+                                                 boolean isFeePaid, String address){
 
+    }
     @Builder
     public record StudentResponse(String rollNumber, String tnpscGroup, String tnpscRegistrationNumber,
                                   boolean isFeePaid, String address, String emailId, String name, String phoneNumber) {
