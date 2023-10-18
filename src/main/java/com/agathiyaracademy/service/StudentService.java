@@ -12,12 +12,14 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final UserService userService;
 
+    //    constructor of StudentService,studentRepository
     public StudentService(StudentRepository studentRepository, UserService userService) {
         this.studentRepository = studentRepository;
         this.userService = userService;
     }
-
+    //    check the condition and then get the request of details from student & return send our response
     public ConstantRecord.StudentResponse saveStudent(ConstantRecord.StudentRequest studentRequest) {
+    //        checking the studentRequest(details) is null or not
         if (studentRequest == null) {
             return null;
         }
@@ -39,8 +41,10 @@ public class StudentService {
         }
         return studentResponse;
     }
-
+    //    check the given student-data is valid(true or false)
+    //    send the StudentRequest from ConstantRecord
     private boolean isValidStudentData(ConstantRecord.StudentRequest studentRequest) {
+    //     Then we return the studentRequest(rollNumber ,tnpscGroup ,address) is compulsory not null
         return studentRequest.rollNumber() != null && studentRequest.tnpscGroup() != null && studentRequest.address() != null;
     }
 }
