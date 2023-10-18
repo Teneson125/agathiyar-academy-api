@@ -12,6 +12,10 @@ public class ConstantRecord {
     public record UserRequest(String name, String password, String emailId, String phoneNumber) {
     }
     @Builder
+    public record UserRequestForUserUpdate(String name, String emailId, String phoneNumber, StudentResponseForUserResponse student){
+
+    }
+    @Builder
     public record StudentResponseForUserResponse(String rollNumber, String tnpscGroup, String tnpscRegistrationNumber,
                                                  boolean isFeePaid, String address){
 

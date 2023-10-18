@@ -23,4 +23,8 @@ public class UserController {
     public ResponseEntity<ConstantRecord.UserResponse> getUser(@RequestParam String emailId){
         return new ResponseEntity<>(userService.getUser(emailId), HttpStatus.OK);
     }
+    @PutMapping("update")
+    public ResponseEntity<ConstantRecord.UserResponse> updateUser(@RequestBody ConstantRecord.UserRequestForUserUpdate userRequest){
+        return new ResponseEntity<>(userService.updateUser(userRequest), HttpStatus.OK);
+    }
 }

@@ -30,6 +30,16 @@ public class UserService {
         return userResponse;
     }
 
+    public ConstantRecord.UserResponse updateUser(ConstantRecord.UserRequestForUserUpdate userRequest) {
+        if(userRequest==null){
+            return null;
+        }
+        if(isValidUserData(userRequest)){
+
+        }
+        return null;
+    }
+
     public boolean isEmailIdRegistered(String emailId) {
         if (emailId == null) {
             return false;
@@ -49,7 +59,9 @@ public class UserService {
     //    Then we return the userRequest(password,phoneNumber,emailId,name) is compulsory not null
         return userRequest.password() != null && userRequest.phoneNumber() != null && userRequest.emailId() != null && userRequest.name() != null;
     }
-
+    private boolean isValidUserData(ConstantRecord.UserRequestForUserUpdate userRequest) {
+        return true;
+    }
     public ConstantRecord.UserResponse getUser(String emailId) {
         if(emailId==null){
             return null;
