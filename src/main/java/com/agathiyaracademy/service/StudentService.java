@@ -47,4 +47,8 @@ public class StudentService {
     //     Then we return the studentRequest(rollNumber ,tnpscGroup ,address) is compulsory not null
         return studentRequest.rollNumber() != null && studentRequest.tnpscGroup() != null && studentRequest.address() != null;
     }
+
+    public ConstantRecord.StudentResponseForUserResponse updateStudent(ConstantRecord.StudentRequestForStudentUpdate studentRequest) {
+        return null;
+    }
 }

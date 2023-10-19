@@ -12,7 +12,7 @@ public class ConstantRecord {
     public record UserRequest(String name, String password, String emailId, String phoneNumber) {
     }
     @Builder
-    public record UserRequestForUserUpdate(String name, String emailId, String phoneNumber, StudentResponseForUserResponse student){
+    public record UserRequestForUserUpdate(String name, String emailId, String phoneNumber, StudentRequestForUserUpdate student, String userEmailId){
 
     }
     @Builder
@@ -32,6 +32,16 @@ public class ConstantRecord {
 
     }
 
+    @Builder
+    public record StudentRequestForUserUpdate(String rollNumber, String tnpscGroup, String tnpscRegistrationNumber,
+                                              boolean isFeePaid, String address){
+
+    }
+    @Builder
+    public record StudentRequestForStudentUpdate(String rollNumber, String tnpscGroup, String tnpscRegistrationNumber,
+                                                boolean isFeePaid, String address, String userEmailId){
+
+    }
     @Builder
     public record AdminRequest(String emailId) {
 

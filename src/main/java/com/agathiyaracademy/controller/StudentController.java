@@ -19,4 +19,8 @@ public class StudentController {
     public ResponseEntity<ConstantRecord.StudentResponse> saveStudent(@RequestBody ConstantRecord.StudentRequest studentRequest) {
         return new ResponseEntity<>(studentService.saveStudent(studentRequest), HttpStatus.OK);
     }
+    @PutMapping("update")
+    public ResponseEntity<ConstantRecord.StudentResponseForUserResponse> updateStudent(@RequestBody ConstantRecord.StudentRequestForStudentUpdate studentRequest){
+        return new ResponseEntity<>(studentService.updateStudent(studentRequest), HttpStatus.OK);
+    }
 }
